@@ -8,7 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -17,12 +21,14 @@ import edu.wpi.first.wpilibj.TimedRobot;
  * project.
  */
 public class Robot extends TimedRobot {
+  TalonSRX talon = new TalonSRX(1);
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
   @Override
   public void robotInit() {
+    talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,10);
   }
 
   @Override
@@ -43,6 +49,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    talon.set(ControlMode.PercentOutput, 0.5);
+    SmartDashboard.putNumber("Encoder_P", talon.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Encoder_V", talon.getSelectedSensorVelocity(0));
   }
 
   @Override
